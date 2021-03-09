@@ -1344,7 +1344,7 @@ impl<'a> Processor<'a> {
 
     fn process_stream(&mut self, doc: &'a Document, content: Vec<u8>, resources: &'a Dictionary, media_box: &MediaBox, output: &mut dyn OutputDev, page_num: u32) -> Result<(), OutputError> {
         let content = Content::decode(&content).unwrap();
-        //let mut font_table = HashMap::new();
+        let mut font_table = HashMap::new();
         let mut gs: GraphicsState = GraphicsState {
             ts: TextState {
                 font: None,
@@ -1460,7 +1460,7 @@ impl<'a> Processor<'a> {
                     }
                 }
                 "Tc" => {
-                    gs.ts.character_spacing = as_num(&operation.operands[0]);
+                    // gs.ts.character_spacing = as_num(&operation.operands[0]);
                 }
                 "Tw" => {
                     gs.ts.word_spacing = as_num(&operation.operands[0]);
@@ -1474,20 +1474,20 @@ impl<'a> Processor<'a> {
                 "Tf" => {
                     let fonts: &Dictionary = get(&doc, resources, b"Font");
                     let name = operation.operands[0].as_name().unwrap();
-                    // let font = font_table.entry(name.to_owned()).or_insert_with(|| make_font(doc, get::<&Dictionary>(doc, fonts, name))).clone();
-                    // {
-                    //     /*let file = font.get_descriptor().and_then(|desc| desc.get_file());
-                    // if let Some(file) = file {
-                    //     let file_contents = filter_data(file.as_stream().unwrap());
-                    //     let mut cursor = Cursor::new(&file_contents[..]);
-                    //     //let f = Font::read(&mut cursor);
-                    //     //dlog!("font file: {:?}", f);
-                    // }*/
-                    // }
-                    // gs.ts.font = Some(font);
+                    let font = font_table.entry(name.to_owned()).or_insert_with(|| make_font(doc, get::<&Dictionary>(doc, fonts, name))).clone();
+                    {
+                        /*let file = font.get_descriptor().and_then(|desc| desc.get_file());
+                    if let Some(file) = file {
+                        let file_contents = filter_data(file.as_stream().unwrap());
+                        let mut cursor = Cursor::new(&file_contents[..]);
+                        //let f = Font::read(&mut cursor);
+                        //dlog!("font file: {:?}", f);
+                    }*/
+                    }
+                    gs.ts.font = Some(font);
 
-                    // gs.ts.font_size = as_num(&operation.operands[1]);
-                    // dlog!("font {} size: {} {:?}", name, gs.ts.font_size, operation);
+                    gs.ts.font_size = as_num(&operation.operands[1]);
+                    dlog!("font {} size: {} {:?}", name, gs.ts.font_size, operation);
                 }
                 "Ts" => {
                     gs.ts.rise = as_num(&operation.operands[0]);
