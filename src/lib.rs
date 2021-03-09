@@ -1460,7 +1460,7 @@ impl<'a> Processor<'a> {
                     }
                 }
                 "Tc" => {
-                    // gs.ts.character_spacing = as_num(&operation.operands[0]);
+                    gs.ts.character_spacing = as_num(&operation.operands[0]);
                 }
                 "Tw" => {
                     gs.ts.word_spacing = as_num(&operation.operands[0]);
