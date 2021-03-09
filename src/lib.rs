@@ -1460,7 +1460,7 @@ impl<'a> Processor<'a> {
                     }
                 }
                 "Tc" => {
-                    // gs.ts.character_spacing = as_num(&operation.operands[0]);
+                    gs.ts.character_spacing = as_num(&operation.operands[0]);
                 }
                 "Tw" => {
                     gs.ts.word_spacing = as_num(&operation.operands[0]);
@@ -1484,9 +1484,9 @@ impl<'a> Processor<'a> {
                         //dlog!("font file: {:?}", f);
                     }*/
                     }
-                    // gs.ts.font = Some(font);
+                    gs.ts.font = Some(font);
 
-                    // gs.ts.font_size = as_num(&operation.operands[1]);
+                    gs.ts.font_size = as_num(&operation.operands[1]);
                     dlog!("font {} size: {} {:?}", name, gs.ts.font_size, operation);
                 }
                 "Ts" => {
